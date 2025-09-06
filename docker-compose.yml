@@ -19,6 +19,9 @@ services:
   backend:
     image: events/backend:1.0.0
     container_name: events-backend
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/events_db?currentSchema=event_mgmt
       SPRING_DATASOURCE_USERNAME: events_adm_user
@@ -26,17 +29,25 @@ services:
       SPRING_LIQUIBASE_DEFAULT_SCHEMA: event_mgmt
       SPRING_LIQUIBASE_LIQUIBASE_SCHEMA: liquibase
       SPRING_LIQUIBASE_ENABLED: "true"
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "8080"
+    expose:
+      - "8080" 
 
   frontend:
     image: events/frontend:1.0.0
     container_name: events-frontend
     depends_on:
       - backend
+    expose:
+      - "80"
+
+  gateway:
+    image: nginx:1.27-alpine
+    container_name: events-gateway
+    depends_on:
+      - frontend
+      - backend
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - "8080:80"
 
