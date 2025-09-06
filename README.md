@@ -11,7 +11,7 @@ This repository provides a **Docker Compose** setup for running the Events appli
 
 ## Prerequisites
 
-- **Docker** ≥ 24
+- **Docker** ≥ 28
 - **Docker Compose** plugin enabled
 - **Free ports:**
     - `8080` → Gateway (Frontend + API)
@@ -19,13 +19,26 @@ This repository provides a **Docker Compose** setup for running the Events appli
 
 ---
 
-## Quick Start
-
+## 1. Build backend image
 ```bash
-git clone https://github.com/martin-luik/ng-proovitoo-infra.git
-cd ng-proovitoo-infra
-docker compose up -d --build
+# Backend
+cd ../ng-proovitoo-backend
+docker build -t events/backend:1.0.0 .
+
+# Frontend
+cd ../ng-proovitoo-frontend
+docker build -t events/frontend:1.0.0 .
 ```
+
+---
+
+## 2. Start Infra
+```bash
+cd ../ng-proovitoo-infra
+docker compose up -d
+```
+
+---
 
 After a few seconds, access:
 
