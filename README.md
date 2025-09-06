@@ -31,6 +31,13 @@ parent-folder/
 ├── ng-proovitoo-frontend
 └── ng-proovitoo-infra   ← (current repo)
 ```
+If you already have **backend** and **frontend** cloned into the same parent folder → continue to [Start Infra](#2-start-infra).
+
+If not, you can fetch all three repositories at once with:
+
+```bash
+curl -s https://raw.githubusercontent.com/martin-luik/ng-proovitoo-infra/main/setup.sh | bash
+```
 
 This structure ensures that the relative build contexts (`../ng-proovitoo-backend` and `../ng-proovitoo-frontend`) in the Compose configuration work as intended.
 
