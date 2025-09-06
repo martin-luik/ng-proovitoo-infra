@@ -17,6 +17,9 @@ services:
       - "5436:5432"
 
   backend:
+    build:
+      context: ../ng-proovitoo-backend
+      dockerfile: Dockerfile
     image: events/backend:1.0.0
     container_name: events-backend
     depends_on:
@@ -30,9 +33,12 @@ services:
       SPRING_LIQUIBASE_LIQUIBASE_SCHEMA: liquibase
       SPRING_LIQUIBASE_ENABLED: "true"
     expose:
-      - "8080" 
+      - "8080"
 
   frontend:
+    build:
+      context: ../ng-proovitoo-frontend
+      dockerfile: Dockerfile
     image: events/frontend:1.0.0
     container_name: events-frontend
     depends_on:
