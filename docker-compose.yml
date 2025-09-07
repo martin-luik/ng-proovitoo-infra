@@ -47,7 +47,7 @@ services:
       - "80"
 
   gateway:
-    image: nginx:1.27-alpine
+    image: nginx:1.29.1-alpine
     container_name: events-gateway
     depends_on:
       - frontend
