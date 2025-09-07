@@ -56,7 +56,7 @@ docker-compose up -d --build
 Once containers are healthy, access:
 
 - [Frontend UI](http://localhost:8080)
-- [Swagger UI (API docs)](http://localhost:8080/api/index.html)
+- [Swagger UI (API docs)](http://localhost:8080/swagger-ui/index.html)
 - [Backend health endpoint](http://localhost:8080/api/actuator/health)
 
 ---
