@@ -89,6 +89,7 @@ The **Nginx gateway** service handles:
 
 - Serving the frontend build
 - Proxying `/api/*` requests to the backend container
+- Exposing Swagger UI at `/swagger-ui/` and API docs at `/api/api-docs`
 
 > Everything (frontend, backend, API docs) is available at [http://localhost:8080](http://localhost:8080).
 
