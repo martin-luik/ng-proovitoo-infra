@@ -3,11 +3,11 @@ services:
     image: postgres:16
     container_name: events-postgres
     environment:
-      POSTGRES_DB: events_db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d events_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 3s
       retries: 15
@@ -26,12 +26,20 @@ services:
       db:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/events_db?currentSchema=event_mgmt
-      SPRING_DATASOURCE_USERNAME: events_adm_user
-      SPRING_DATASOURCE_PASSWORD: events_admin
-      SPRING_LIQUIBASE_DEFAULT_SCHEMA: event_mgmt
-      SPRING_LIQUIBASE_LIQUIBASE_SCHEMA: liquibase
-      SPRING_LIQUIBASE_ENABLED: "true"
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_LIQUIBASE_DEFAULT_SCHEMA: ${SPRING_LIQUIBASE_DEFAULT_SCHEMA}
+      SPRING_LIQUIBASE_LIQUIBASE_SCHEMA: ${SPRING_LIQUIBASE_LIQUIBASE_SCHEMA}
+      SPRING_LIQUIBASE_ENABLED: ${SPRING_LIQUIBASE_ENABLED}
+      APP_JWT_SECRET: ${APP_JWT_SECRET}
+      APP_JWT_ISSUER: ${APP_JWT_ISSUER:-events-app}
+      APP_JWT_EXPIRY_MINUTES: ${APP_JWT_EXPIRY_MINUTES:-60}
+      APP_COOKIES_NAME: ${APP_COOKIES_NAME:-access_token}
+      APP_COOKIES_HTTP_ONLY: ${APP_COOKIES_HTTP_ONLY:-true}
+      APP_COOKIES_SECURE: ${APP_COOKIES_SECURE:-false}
+      APP_COOKIES_SAME_SITE: ${APP_COOKIES_SAME_SITE:-Lax}
+      APP_COOKIES_MAX_AGE_MINUTES: ${APP_COOKIES_MAX_AGE_MINUTES:-60}
     expose:
       - "8080"
 

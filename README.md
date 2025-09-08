@@ -9,11 +9,16 @@ This repository provides a **Docker Compose** setup for running the Events appli
 
 ---
 
-## Prerequisites
+## 🚀 Deployment Summary
 
-- **Docker** ≥ 28
-- **Docker Compose** plugin enabled
-- **Free ports:**
+**This project is designed to run on any server with Docker installed.
+No manual Tomcat or Nginx setup is required — everything is provided through Docker Compose.**
+
+- **Target OS: Linux server (recommended). Works also on Windows (with WSL2) or macOS with Docker Desktop.**
+- **Required software:**
+  - **Docker** ≥ 28
+  - **Docker Compose** plugin enabled
+- **Open ports needed:**
   - `8080` → Gateway (Frontend + API)
   - `5436` → PostgreSQL (host port)
 
@@ -50,6 +55,48 @@ If your folder layout differs, adjust the `build.context` paths in `docker-compo
 ```bash
 docker-compose up -d --build
 ```
+
+---
+
+## Environment Variables
+
+The infra uses a `.env` file in this directory to configure database, backend, JWT, and auth cookie settings for Docker Compose.
+**You can edit this file to change database names, users, or backend connection details.**
+
+Example `.env` file:
+
+```dotenv
+# --- PostgreSQL ---
+POSTGRES_DB=events_db
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
+
+# --- Backend database config ---
+SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/events_db?currentSchema=event_mgmt
+SPRING_DATASOURCE_USERNAME=events_adm_user
+SPRING_DATASOURCE_PASSWORD=events_admin
+SPRING_LIQUIBASE_DEFAULT_SCHEMA=event_mgmt
+SPRING_LIQUIBASE_LIQUIBASE_SCHEMA=liquibase
+SPRING_LIQUIBASE_ENABLED=true
+
+# --- JWT ---
+APP_JWT_SECRET=change-me-very-long-random-256-bit
+APP_JWT_ISSUER=events-app
+APP_JWT_EXPIRY_MINUTES=60
+
+# --- Auth cookie ---
+APP_COOKIES_NAME=access_token
+APP_COOKIES_HTTP_ONLY=true
+APP_COOKIES_SECURE=false      # set true in production/HTTPS
+APP_COOKIES_SAME_SITE=Lax     # options: Lax, Strict, None
+APP_COOKIES_MAX_AGE_MINUTES=60
+```
+
+- **POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD:** Used by the PostgreSQL container.
+- **SPRING_DATASOURCE_\*** and **SPRING_LIQUIBASE_\***: Used by the backend service for DB connection and schema management.
+
+> The default `.env` file is provided.  
+> If you need to reset or change credentials, update this file before running `docker-compose up -d`.
 
 ---
 
